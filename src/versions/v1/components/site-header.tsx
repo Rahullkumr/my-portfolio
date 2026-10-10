@@ -94,7 +94,7 @@ export function SiteHeader() {
 							alt=""
 							width={32}
 							height={32}
-							className="size-8 rounded-full object-cover ring-1 ring-border"
+							className="photo size-8 rounded-full object-cover ring-1 ring-border"
 						/>
 					) : (
 						<span className="grid size-8 place-items-center rounded-full border border-border font-mono text-xs">

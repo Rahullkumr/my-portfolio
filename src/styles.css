@@ -40,28 +40,53 @@
 .dark {
   color-scheme: dark;
 
-  --background: oklch(0.145 0.004 285);
-  --foreground: oklch(0.96 0.003 285);
-  --card: oklch(0.175 0.005 285);
+  /* Ink rather than pure black; surfaces step up in lightness so cards and
+     menus read as raised without heavy shadows. Text sits just below white
+     to cut glare, and the mint is a touch calmer than full neon. */
+  --background: oklch(0.155 0.006 285);
+  --foreground: oklch(0.945 0.004 285);
+  --card: oklch(0.195 0.007 285);
   --card-foreground: var(--foreground);
-  --popover: oklch(0.175 0.005 285);
+  --popover: oklch(0.205 0.007 285);
   --popover-foreground: var(--foreground);
-  --primary: oklch(0.86 0.14 165);
-  --primary-foreground: oklch(0.2 0.03 165);
-  --secondary: oklch(0.22 0.005 285);
+  --primary: oklch(0.83 0.13 168);
+  --primary-foreground: oklch(0.21 0.04 168);
+  --secondary: oklch(0.235 0.007 285);
   --secondary-foreground: var(--foreground);
-  --muted: oklch(0.22 0.005 285);
-  --muted-foreground: oklch(0.7 0.01 285);
-  --accent: oklch(0.22 0.005 285);
+  --muted: oklch(0.235 0.007 285);
+  --muted-foreground: oklch(0.72 0.012 285);
+  --accent: oklch(0.235 0.007 285);
   --accent-foreground: var(--foreground);
   --destructive: oklch(0.637 0.237 25.331);
   --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(1 0 0 / 0.09);
-  --input: oklch(1 0 0 / 0.12);
-  --ring: oklch(0.86 0.14 165 / 0.6);
+  --border: oklch(1 0 0 / 0.085);
+  --input: oklch(1 0 0 / 0.13);
+  --ring: oklch(0.84 0.13 168 / 0.6);
 
-  --brand: oklch(0.86 0.14 165);
-  --brand-glow: oklch(0.86 0.14 165 / 0.1);
+  --brand: oklch(0.84 0.13 168);
+  --brand-glow: oklch(0.84 0.13 168 / 0.12);
+}
+
+/* Theme switch: the new theme grows out of the toggle button as a circle.
+   --theme-x/--theme-y are set by ThemeToggle; browsers without view
+   transitions, or with reduced motion, switch instantly. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  animation: theme-reveal 550ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0 at var(--theme-x, 50%) var(--theme-y, 0));
+  }
+  to {
+    clip-path: circle(150vmax at var(--theme-x, 50%) var(--theme-y, 0));
+  }
 }
 
 @theme inline {
@@ -102,8 +127,10 @@
     scroll-padding-top: 5rem;
   }
 
+  /* .smooth-scroll is added at the first click or key press (see __root.tsx),
+     so page loads and reloads never animate the scroll */
   @media (prefers-reduced-motion: no-preference) {
-    html {
+    html.smooth-scroll {
       scroll-behavior: smooth;
     }
   }

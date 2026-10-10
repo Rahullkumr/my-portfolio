@@ -129,7 +129,7 @@ export function Work() {
 						</>
 					);
 					const cardClass =
-						"group flex h-full flex-col rounded-xl border border-border bg-card/60 p-6 transition-colors hover:border-foreground/20 hover:bg-card";
+						"surface group flex h-full flex-col p-6 transition-colors hover:border-foreground/20 hover:bg-card";
 
 					return (
 						<li

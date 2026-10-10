@@ -85,7 +85,7 @@ export function VersionSwitcher({ className }: { className?: string }) {
 				aria-label="Site versions"
 				onKeyDown={onMenuKeyDown}
 				className={cn(
-					"absolute right-0 top-full z-50 mt-2 w-72 max-w-[calc(100vw-2rem)] origin-top-right rounded-xl border border-border bg-popover p-1.5 text-popover-foreground shadow-xl shadow-black/10 transition-[opacity,scale,visibility] duration-150",
+					"absolute right-0 top-full z-50 mt-2 w-72 max-w-[calc(100vw-2rem)] origin-top-right rounded-xl border border-border bg-popover p-1.5 text-popover-foreground shadow-xl shadow-black/10 dark:shadow-black/50 transition-[opacity,scale,visibility] duration-150",
 					open
 						? "visible scale-100 opacity-100"
 						: "invisible scale-95 opacity-0",

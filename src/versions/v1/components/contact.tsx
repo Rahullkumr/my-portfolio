@@ -4,6 +4,9 @@ import { profile } from "#/data/profile";
 import { Section } from "./section";
 import { SocialLinks } from "./social-links";
 
+// Primary contact button when no public email is set
+const linkedin = profile.socials.find((social) => social.icon === "linkedin");
+
 export function Contact() {
 	const [copied, setCopied] = useState(false);
 
@@ -20,23 +23,39 @@ export function Contact() {
 	return (
 		<Section id="contact" index="06" label="Contact">
 			<h2 className="max-w-2xl text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] font-semibold tracking-[-0.035em] text-balance">
-				Have a role or a project in mind?
+				Have a role, a project or an open-source idea in mind?
 				<span className="block text-muted-foreground">Let's talk.</span>
 			</h2>
 
 			<div className="mt-10 flex flex-wrap items-center gap-3">
-				<a href={`mailto:${profile.email}`} className="btn-primary">
-					{profile.email}
-					<ArrowUpRight className="size-4" />
-				</a>
-				<button type="button" onClick={copyEmail} className="btn-ghost">
-					{copied ? (
-						<Check className="size-4 text-brand" />
-					) : (
-						<Copy className="size-4" />
-					)}
-					<span aria-live="polite">{copied ? "Copied" : "Copy email"}</span>
-				</button>
+				{profile.email ? (
+					<>
+						<a href={`mailto:${profile.email}`} className="btn-primary">
+							{profile.email}
+							<ArrowUpRight className="size-4" />
+						</a>
+						<button type="button" onClick={copyEmail} className="btn-ghost">
+							{copied ? (
+								<Check className="size-4 text-brand" />
+							) : (
+								<Copy className="size-4" />
+							)}
+							<span aria-live="polite">{copied ? "Copied" : "Copy email"}</span>
+						</button>
+					</>
+				) : (
+					linkedin && (
+						<a
+							href={linkedin.href}
+							target="_blank"
+							rel="noreferrer"
+							className="btn-primary"
+						>
+							Message me on LinkedIn
+							<ArrowUpRight className="size-4" />
+						</a>
+					)
+				)}
 				{profile.resumeUrl && (
 					<a
 						href={profile.resumeUrl}
