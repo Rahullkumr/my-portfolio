@@ -1,10 +1,4 @@
-import {
-	ArrowDown,
-	ArrowRight,
-	Construction,
-	MapPin,
-	Trophy,
-} from "lucide-react";
+import { ArrowDown, ArrowRight, MapPin, Trophy } from "lucide-react";
 import { profile } from "#/data/profile";
 import { cn } from "#/lib/utils";
 import { SocialLinks } from "./social-links";
@@ -36,12 +30,6 @@ export function Hero() {
 								Open to new opportunities
 							</span>
 						)}
-						{profile.underDevelopment && (
-							<span className="flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-amber-700 dark:text-amber-300">
-								<Construction className="size-3.5" strokeWidth={1.75} />
-								Site under development
-							</span>
-						)}
 						<span className="flex items-center gap-1.5">
 							<MapPin className="size-3.5" strokeWidth={1.75} />
 							{profile.location}
@@ -51,7 +39,7 @@ export function Hero() {
 					{profile.spotlight && (
 						<a
 							href={profile.spotlight.href}
-							className="rise group mt-6 inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/[0.06] py-1.5 pr-3 pl-2.5 text-sm text-foreground transition-colors hover:border-brand/60 md:mt-8"
+							className="rise group mt-4 inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/[0.06] py-1.5 pr-3 pl-2.5 text-sm text-foreground transition-colors hover:border-brand/60"
 							style={{ animationDelay: "40ms" }}
 						>
 							<Trophy aria-hidden className="size-4 text-brand" />
@@ -66,13 +54,14 @@ export function Hero() {
 					{/* Sized by width and height so the whole hero fits short laptop screens */}
 					<h1
 						className={cn(
-							"rise text-[clamp(2.25rem,min(6vw,8.5vh),4rem)] leading-[1.04] font-semibold tracking-[-0.04em] text-balance",
-							profile.spotlight ? "mt-5 md:mt-6" : "mt-6 md:mt-8",
+							"rise text-[clamp(2.25rem,min(6vw,8.5vh),4rem)] leading-[1.08] font-semibold tracking-[-0.04em] text-balance",
+							profile.spotlight ? "mt-8 md:mt-10" : "mt-6 md:mt-8",
 						)}
 						style={{ animationDelay: "80ms" }}
 					>
 						{profile.name}.
-						<span className="block text-muted-foreground">
+						{/* Smaller than the name so the name stays the focus */}
+						<span className="mt-1 block text-[0.72em] leading-[1.12] text-muted-foreground">
 							{profile.headline}
 						</span>
 					</h1>
