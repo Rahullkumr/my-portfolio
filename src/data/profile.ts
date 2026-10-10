@@ -35,7 +35,7 @@ export const profile = {
 	name: "Rahul Kumar",
 	role: "Full-Stack Engineer",
 	location: "Ranchi, India",
-	photo: "/rahulkumar.jpg", // file in /public; set to "" to show initials instead
+	photo: "/rahullkumr.webp", // file in /public; set to "" to show initials instead
 	available: true,
 	headline: "Full-stack engineer building the ERP software businesses run on.",
 	intro:
