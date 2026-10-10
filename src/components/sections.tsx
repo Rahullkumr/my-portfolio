@@ -1,4 +1,5 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Github, Trophy, Youtube } from "lucide-react";
+import type { ProjectLink } from "#/data/profile";
 import { experience, profile, projects, stack } from "#/data/profile";
 import { Section } from "./section";
 
@@ -65,6 +66,12 @@ export function ExperienceSection() {
 	);
 }
 
+const linkIcons: Record<ProjectLink["icon"], typeof Github> = {
+	github: Github,
+	youtube: Youtube,
+	link: ArrowUpRight,
+};
+
 export function Work() {
 	return (
 		<Section id="work" index="03" label="Selected work">
@@ -76,13 +83,19 @@ export function Work() {
 								<p className="font-mono text-xs text-muted-foreground">
 									{String(i + 1).padStart(2, "0")} · {project.context}
 								</p>
-								{project.href && (
+								{project.href && !project.links && (
 									<ArrowUpRight className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brand" />
 								)}
 							</div>
 							<h3 className="mt-6 text-lg font-medium tracking-tight">
 								{project.title}
 							</h3>
+							{project.award && (
+								<p className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-brand">
+									<Trophy aria-hidden className="size-4" />
+									{project.award}
+								</p>
+							)}
 							<p className="mt-2 leading-relaxed text-muted-foreground">
 								{project.description}
 							</p>
@@ -93,14 +106,37 @@ export function Work() {
 									</li>
 								))}
 							</ul>
+							{project.links && (
+								<ul className="mt-6 flex flex-wrap gap-x-6 gap-y-3 border-t border-border pt-5 text-sm">
+									{project.links.map((link) => {
+										const Icon = linkIcons[link.icon];
+										return (
+											<li key={link.href}>
+												<a
+													href={link.href}
+													target="_blank"
+													rel="noreferrer"
+													className="inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-brand"
+												>
+													<Icon aria-hidden className="size-4" />
+													{link.label}
+												</a>
+											</li>
+										);
+									})}
+								</ul>
+							)}
 						</>
 					);
 					const cardClass =
 						"group flex h-full flex-col rounded-xl border border-border bg-card/60 p-6 transition-colors hover:border-foreground/20 hover:bg-card";
 
 					return (
-						<li key={project.title}>
-							{project.href ? (
+						<li
+							key={project.title}
+							className={projects.length === 1 ? "sm:col-span-2" : undefined}
+						>
+							{project.href && !project.links ? (
 								<a
 									href={project.href}
 									target="_blank"

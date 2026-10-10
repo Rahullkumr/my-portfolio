@@ -21,9 +21,17 @@ export type Experience = {
 export type Project = {
 	title: string;
 	context: string;
+	award?: string;
 	description: string;
 	tags: string[];
-	href?: string;
+	href?: string; // makes the whole card a link; ignored when links is set
+	links?: ProjectLink[];
+};
+
+export type ProjectLink = {
+	label: string;
+	href: string;
+	icon: "github" | "youtube" | "link";
 };
 
 export type StackGroup = {
@@ -88,21 +96,37 @@ export const experience: Experience[] = [
 
 export const projects: Project[] = [
 	{
-		title: "Serverless ERP API",
-		context: "Oplandtech ERP",
+		title: "Padh Ke Batao",
+		context: "DEV Hacktoberfest 2026",
+		award: "Winner · Best Use of ElevenLabs",
 		description:
-			"A Fastify API running on AWS Lambda with JWT and OAuth auth, file storage on S3, queued jobs on SQS and PDF/Excel exports.",
-		tags: ["Fastify", "AWS Lambda", "S3", "SQS", "Redis", "Zod"],
+			"Photograph a bank notice, hospital report or government letter and get a plain-language explanation in Hindi or English: what it says, what to do and by when, read aloud. Built for my grandfather. A local vision model reads the photo on a CPU-only laptop, so the document never leaves the machine; only the explanation text goes to ElevenLabs for the voice.",
+		tags: [
+			"Ollama",
+			"Qwen 3.5",
+			"ElevenLabs",
+			"Fastify",
+			"Node.js",
+			"JavaScript",
+		],
+		links: [
+			{
+				label: "GitHub",
+				href: "https://github.com/Rahullkumr/padh-ke-batao",
+				icon: "github",
+			},
+			{
+				label: "Demo video",
+				href: "https://youtu.be/VO9MM8JvKCQ",
+				icon: "youtube",
+			},
+			{
+				label: "Write-up on DEV",
+				href: "https://dev.to/rahullkumr/padh-ke-batao-an-ai-that-reads-my-grandfathers-documents-to-him-on-a-laptop-with-no-gpu-3818",
+				icon: "link",
+			},
+		],
 	},
-	{
-		title: "Company Website",
-		context: "Oplandtech",
-		description:
-			"The marketing site for the ERP product: fast, responsive and animated, with a contact flow for sales enquiries.",
-		tags: ["React", "Tailwind CSS", "Framer Motion", "Vite"],
-		// TODO: add href: "https://..." if the site is public
-	},
-	// TODO: add personal or open-source projects with an href to the repo or live site
 ];
 
 export const stack: StackGroup[] = [
@@ -139,5 +163,17 @@ export const stack: StackGroup[] = [
 	{
 		label: "Data & UI",
 		items: ["Recharts", "Chart.js", "TipTap", "dnd-kit"],
+	},
+	{
+		label: "AI",
+		items: [
+			"Ollama",
+			"Local vision models",
+			"Qwen",
+			"Prompt engineering",
+			"Structured JSON output",
+			"ElevenLabs TTS",
+			"Web Speech API",
+		],
 	},
 ];
