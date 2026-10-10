@@ -1,7 +1,7 @@
 services:
   - type: web
     runtime: node
-    name: tanstack-start-app
+    name: rahul-portfolio
     buildCommand: bun install && bun --bun run build
     startCommand: bun --bun run start
     envVars:
