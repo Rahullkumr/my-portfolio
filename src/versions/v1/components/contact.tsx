@@ -80,6 +80,12 @@ export function SiteFooter() {
 			<div className="page flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-muted-foreground">
 				<p>
 					© {new Date().getFullYear()} {profile.name}
+					{profile.underDevelopment && (
+						<span className="text-muted-foreground/70">
+							{" "}
+							· Site under development
+						</span>
+					)}
 				</p>
 				<a href="#top" className="transition-colors hover:text-foreground">
 					Back to top ↑

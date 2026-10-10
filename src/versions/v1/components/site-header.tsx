@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
+import { useEffect, useId, useRef, useState } from "react";
 import { ThemeToggle } from "#/components/theme-toggle";
 import { VersionSwitcher } from "#/components/version-switcher";
 import { profile } from "#/data/profile";
@@ -48,6 +49,7 @@ function SectionLink({
 	className?: string;
 	children: React.ReactNode;
 	"aria-label"?: string;
+	onClick?: () => void;
 }) {
 	const { pinned, page } = useCurrentVersion();
 	if (page === "home") {
@@ -77,11 +79,45 @@ export function SiteHeader() {
 		.split(" ")
 		.map((part) => part[0])
 		.join("");
+	const [menuOpen, setMenuOpen] = useState(false);
+	const headerRef = useRef<HTMLElement>(null);
+	const menuId = useId();
 	const navLink =
 		"rounded-full px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground";
+	const menuLink =
+		"flex h-12 items-center border-b border-border text-base text-muted-foreground transition-colors hover:text-foreground";
+	const closeMenu = () => setMenuOpen(false);
+
+	// Close the mobile menu on Escape, a tap outside the header, or once the
+	// window is wide enough to show the full nav.
+	useEffect(() => {
+		if (!menuOpen) return;
+		const wide = matchMedia("(min-width: 64rem)");
+		function onKeyDown(event: KeyboardEvent) {
+			if (event.key === "Escape") setMenuOpen(false);
+		}
+		function onPointerDown(event: PointerEvent) {
+			if (!headerRef.current?.contains(event.target as Node))
+				setMenuOpen(false);
+		}
+		function onWide() {
+			if (wide.matches) setMenuOpen(false);
+		}
+		document.addEventListener("keydown", onKeyDown);
+		document.addEventListener("pointerdown", onPointerDown);
+		wide.addEventListener("change", onWide);
+		return () => {
+			document.removeEventListener("keydown", onKeyDown);
+			document.removeEventListener("pointerdown", onPointerDown);
+			wide.removeEventListener("change", onWide);
+		};
+	}, [menuOpen]);
 
 	return (
-		<header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl">
+		<header
+			ref={headerRef}
+			className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl"
+		>
 			<nav className="page flex h-16 items-center justify-between">
 				<SectionLink
 					id="top"
@@ -94,10 +130,10 @@ export function SiteHeader() {
 							alt=""
 							width={32}
 							height={32}
-							className="photo size-8 rounded-full object-cover ring-1 ring-border"
+							className="photo size-8 shrink-0 rounded-full object-cover ring-1 ring-border"
 						/>
 					) : (
-						<span className="grid size-8 place-items-center rounded-full border border-border font-mono text-xs">
+						<span className="grid size-8 shrink-0 place-items-center rounded-full border border-border font-mono text-xs">
 							{initials}
 						</span>
 					)}
@@ -125,6 +161,7 @@ export function SiteHeader() {
 						version={pinned}
 						className={cn(
 							navLink,
+							"hidden sm:inline-flex",
 							(page === "blog" || active === "writing") && "text-foreground",
 						)}
 					>
@@ -135,14 +172,84 @@ export function SiteHeader() {
 					<SectionLink
 						id="contact"
 						className={cn(
-							"ml-1 rounded-full border border-border px-4 py-2 text-sm transition-colors hover:border-foreground/25",
+							"ml-1 hidden rounded-full border border-border px-4 py-2 text-sm transition-colors hover:border-foreground/25 sm:inline-flex",
 							active === "contact" && "border-brand/50 text-brand",
 						)}
 					>
 						Contact
 					</SectionLink>
+					<button
+						type="button"
+						aria-expanded={menuOpen}
+						aria-controls={menuId}
+						aria-label={menuOpen ? "Close menu" : "Open menu"}
+						onClick={() => setMenuOpen((open) => !open)}
+						className="-mr-2 grid size-11 place-items-center rounded-full text-muted-foreground transition-colors hover:text-foreground lg:hidden"
+					>
+						{menuOpen ? (
+							<X className="size-5" strokeWidth={1.75} />
+						) : (
+							<Menu className="size-5" strokeWidth={1.75} />
+						)}
+					</button>
 				</div>
 			</nav>
+
+			{/* Mobile menu: part of the header so it shares its blurred backdrop */}
+			<div
+				id={menuId}
+				inert={!menuOpen}
+				className={cn(
+					"grid transition-[grid-template-rows] duration-300 ease-out lg:hidden",
+					menuOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+				)}
+			>
+				<div className="overflow-hidden">
+					<ul className="page pb-4">
+						{sections.map((section) => (
+							<li key={section.id}>
+								<SectionLink
+									id={section.id}
+									onClick={closeMenu}
+									className={cn(
+										menuLink,
+										active === section.id && "text-foreground",
+									)}
+								>
+									{section.label}
+								</SectionLink>
+							</li>
+						))}
+						<li>
+							<PageLink
+								page="blog"
+								version={pinned}
+								onClick={closeMenu}
+								className={cn(
+									menuLink,
+									(page === "blog" || active === "writing") &&
+										"text-foreground",
+								)}
+							>
+								Blog
+							</PageLink>
+						</li>
+						<li>
+							<SectionLink
+								id="contact"
+								onClick={closeMenu}
+								className={cn(
+									menuLink,
+									"border-b-0",
+									active === "contact" && "text-brand",
+								)}
+							>
+								Contact
+							</SectionLink>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</header>
 	);
 }

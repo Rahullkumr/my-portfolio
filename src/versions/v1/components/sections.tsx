@@ -6,7 +6,7 @@ import { Section } from "./section";
 export function About() {
 	return (
 		<Section id="about" index="01" label="About">
-			<div className="max-w-2xl space-y-5 text-xl leading-relaxed text-pretty md:text-2xl md:leading-relaxed">
+			<div className="max-w-2xl space-y-5 text-lg leading-relaxed text-pretty sm:text-xl md:text-2xl md:leading-relaxed">
 				{profile.about.map((paragraph, i) => (
 					<p
 						key={paragraph}
