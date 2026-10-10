@@ -1,6 +1,12 @@
-import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import {
+	createRootRoute,
+	HeadContent,
+	Link,
+	Scripts,
+} from "@tanstack/react-router";
 
 import { profile } from "#/data/profile";
+import { useCurrentVersion } from "#/versions/use-current-version";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRoute({
@@ -57,6 +63,7 @@ export const Route = createRootRoute({
 		],
 	}),
 	shellComponent: RootDocument,
+	notFoundComponent: NotFound,
 });
 
 // Runs before first paint so the page never flashes the wrong theme.
@@ -64,8 +71,11 @@ export const Route = createRootRoute({
 const themeScript = `(function(){var d=matchMedia('(prefers-color-scheme: dark)').matches;try{var t=localStorage.getItem('theme');if(t)d=t==='dark'}catch(e){}document.documentElement.classList.toggle('dark',d)})()`;
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+	// Version CSS is scoped under [data-version="vN"], so each design styles only itself.
+	const { id } = useCurrentVersion();
+
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html lang="en" data-version={id} suppressHydrationWarning>
 			<head>
 				{/* biome-ignore lint/security/noDangerouslySetInnerHtml: static inline theme script */}
 				<script dangerouslySetInnerHTML={{ __html: themeScript }} />
@@ -76,5 +86,26 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				<Scripts />
 			</body>
 		</html>
+	);
+}
+
+function NotFound() {
+	return (
+		<main className="grid min-h-svh place-items-center px-6 text-center">
+			<div>
+				<p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+					404
+				</p>
+				<h1 className="mt-4 text-3xl font-semibold tracking-tight">
+					Page not found
+				</h1>
+				<Link
+					to="/"
+					className="mt-8 inline-flex h-11 items-center rounded-full border border-border px-5 text-sm transition-colors hover:border-foreground/25"
+				>
+					Go home
+				</Link>
+			</div>
+		</main>
 	);
 }

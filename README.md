@@ -48,15 +48,37 @@ All text on the site lives in [`src/data/profile.ts`](src/data/profile.ts): prof
 - **Projects** take an optional `award` (shown with a trophy under the title) and `links` (GitHub, YouTube or a plain link, shown along the bottom of the card).
 - Search the file for `TODO` to find details still to fill in.
 - The profile photo is [`public/rahullkumr.webp`](public/rahullkumr.webp).
+- **Blog** posts come from dev.to: the site lists the articles of the `devto` username in `profile.ts`, so publishing on DEV is all it takes. The list is cached on the server for 30 minutes, and the last good copy is shown if dev.to is down.
+
+## Versions
+
+The site keeps every design it has had. All versions show the same content; each one only decides how it looks. A dropdown in the header switches between them.
+
+- The newest version is the live site at `/` and `/blog`.
+- Every version is also kept at `/<id>` and `/<id>/blog`, for example `/v1/blog`. These copies are marked `noindex` so search engines only index the live site.
+
+To add a version, for example v2:
+
+1. Create `src/versions/v2/` with `home.tsx`, `blog.tsx`, its components and a `v2.css`.
+2. Scope everything in `v2.css` under `[data-version='v2']` (see `v1/v1.css`) and import it in `src/styles.css`. To change colours, override the theme tokens there.
+3. Add `v2` to the top of the list in `src/versions/meta.ts` and its pages in `src/versions/pages.ts`.
+4. Put `<VersionSwitcher />` from `#/components/version-switcher` in the new design.
+
+v2 then becomes the live site and v1 stays reachable at `/v1`.
 
 ## Project structure
 
 ```
 src/
-  data/profile.ts        all site content
-  components/            hero, sections (about, experience, work, stack), contact, header, theme toggle
-  routes/                index page and root layout
-  styles.css             theme tokens (light and dark) and shared styles
+  data/profile.ts        all site content, shared by every version
+  lib/devto.ts           fetches blog posts from dev.to (server function)
+  components/            shared by every version: theme toggle, version switcher
+  versions/
+    meta.ts              list of versions, newest first
+    pages.ts             each version's home and blog page
+    v1/                  the v1 design: pages, components and v1.css
+  routes/                / and /blog (live version), /$version and /$version/blog
+  styles.css             theme tokens (light and dark) and base styles
 public/                  photo, favicons
 render.yaml              Render Blueprint
 ```

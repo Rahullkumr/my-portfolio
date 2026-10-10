@@ -51,6 +51,9 @@ export const profile = {
 		"I work across the stack: serverless APIs on AWS, relational data models, and data-dense React interfaces that people use all day.",
 	email: "you@example.com", // TODO: your public email
 	resumeUrl: "", // TODO: put resume.pdf in /public, then set this to "/resume.pdf"
+	devto: "rahullkumr", // dev.to username; the blog lists this account's articles
+	blogIntro:
+		"Notes on what I build and what I learn along the way, published on DEV.",
 	socials: [
 		{ label: "GitHub", href: "https://github.com/rahullkumr", icon: "github" },
 		{

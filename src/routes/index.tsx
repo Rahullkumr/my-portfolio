@@ -1,24 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Contact, SiteFooter } from "#/components/contact";
-import { Hero } from "#/components/hero";
-import { About, ExperienceSection, Stack, Work } from "#/components/sections";
-import { SiteHeader } from "#/components/site-header";
+import { getPosts } from "#/lib/devto";
+import { latestVersion } from "#/versions/meta";
+import { pages } from "#/versions/pages";
 
-export const Route = createFileRoute("/")({ component: Home });
+// The live home page: always the newest version.
+export const Route = createFileRoute("/")({
+	loader: () => ({ feed: getPosts() }),
+	component: LiveHome,
+});
 
-function Home() {
-	return (
-		<>
-			<SiteHeader />
-			<main>
-				<Hero />
-				<About />
-				<ExperienceSection />
-				<Work />
-				<Stack />
-				<Contact />
-			</main>
-			<SiteFooter />
-		</>
-	);
+function LiveHome() {
+	const { feed } = Route.useLoaderData();
+	const { Home } = pages[latestVersion.id];
+	return <Home feed={feed} />;
 }

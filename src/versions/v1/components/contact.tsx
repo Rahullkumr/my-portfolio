@@ -18,7 +18,7 @@ export function Contact() {
 	}
 
 	return (
-		<Section id="contact" index="05" label="Contact">
+		<Section id="contact" index="06" label="Contact">
 			<h2 className="max-w-2xl text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] font-semibold tracking-[-0.035em] text-balance">
 				Have a role or a project in mind?
 				<span className="block text-muted-foreground">Let's talk.</span>
