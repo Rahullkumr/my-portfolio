@@ -1,0 +1,13 @@
+services:
+  - type: web
+    runtime: node
+    name: tanstack-start-app
+    buildCommand: bun install && bun --bun run build
+    startCommand: bun --bun run start
+    envVars:
+      - key: BUN_VERSION
+        value: '1.3.14'
+      - key: NITRO_PRESET
+        value: render-com
+      - key: HOST
+        value: 0.0.0.0
