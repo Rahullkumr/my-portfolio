@@ -37,6 +37,7 @@ export const profile = {
 	location: "Ranchi, India",
 	photo: "/rahullkumr.webp", // file in /public; set to "" to show initials instead
 	available: true,
+	underDevelopment: true, // shows a "Site under development" badge in the hero; set false when done
 	headline: "Full-stack engineer building the ERP software businesses run on.",
 	intro:
 		"I work across the stack: serverless APIs on AWS, relational data models, and data-dense React interfaces that people use all day.",

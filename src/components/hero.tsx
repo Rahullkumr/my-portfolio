@@ -1,4 +1,4 @@
-import { ArrowDown, MapPin } from "lucide-react";
+import { ArrowDown, Construction, MapPin } from "lucide-react";
 import { profile } from "#/data/profile";
 import { SocialLinks } from "./social-links";
 
@@ -27,6 +27,12 @@ export function Hero() {
 							<span className="flex items-center gap-2.5">
 								<span className="status-dot" />
 								Open to new opportunities
+							</span>
+						)}
+						{profile.underDevelopment && (
+							<span className="flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-amber-700 dark:text-amber-300">
+								<Construction className="size-3.5" strokeWidth={1.75} />
+								Site under development
 							</span>
 						)}
 						<span className="flex items-center gap-1.5">
