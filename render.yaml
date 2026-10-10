@@ -2,6 +2,7 @@ services:
   - type: web
     runtime: node
     name: rahul-portfolio
+    plan: free
     region: singapore
     buildCommand: bun install && bun --bun run build
     startCommand: bun --bun run start
