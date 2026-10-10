@@ -95,7 +95,7 @@ export function Hero() {
 						<a href="#contact" className="btn-ghost">
 							Get in touch
 						</a>
-						<SocialLinks className="ml-1" />
+						<SocialLinks className="-ml-3 w-full sm:ml-1 sm:w-auto" />
 					</div>
 				</div>
 			</div>
