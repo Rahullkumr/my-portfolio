@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
+import { ThemeToggle } from "#/components/theme-toggle";
+import { VersionSwitcher } from "#/components/version-switcher";
 import { profile } from "#/data/profile";
 import { cn } from "#/lib/utils";
-import { ThemeToggle } from "./theme-toggle";
+import { PageLink } from "#/versions/page-link";
+import { useCurrentVersion } from "#/versions/use-current-version";
 
 const sections = [
 	{ id: "about", label: "About" },
@@ -11,10 +14,11 @@ const sections = [
 ];
 
 // Highlights the nav link for whichever section sits in the middle of the viewport.
-function useActiveSection() {
+function useActiveSection(enabled: boolean) {
 	const [active, setActive] = useState<string | null>(null);
 
 	useEffect(() => {
+		if (!enabled) return;
 		const observer = new IntersectionObserver(
 			(entries) => {
 				for (const entry of entries) {
@@ -23,28 +27,64 @@ function useActiveSection() {
 			},
 			{ rootMargin: "-45% 0px -50% 0px" },
 		);
-		for (const { id } of [...sections, { id: "contact" }]) {
+		for (const { id } of [...sections, { id: "writing" }, { id: "contact" }]) {
 			const el = document.getElementById(id);
 			if (el) observer.observe(el);
 		}
 		return () => observer.disconnect();
-	}, []);
+	}, [enabled]);
 
-	return active;
+	return enabled ? active : null;
+}
+
+// On the home page section links are plain anchors; elsewhere they go home first.
+function SectionLink({
+	id,
+	className,
+	children,
+	...props
+}: {
+	id: string;
+	className?: string;
+	children: React.ReactNode;
+	"aria-label"?: string;
+}) {
+	const { pinned, page } = useCurrentVersion();
+	if (page === "home") {
+		return (
+			<a href={`#${id}`} className={className} {...props}>
+				{children}
+			</a>
+		);
+	}
+	return (
+		<PageLink
+			page="home"
+			version={pinned}
+			hash={id}
+			className={className}
+			{...props}
+		>
+			{children}
+		</PageLink>
+	);
 }
 
 export function SiteHeader() {
-	const active = useActiveSection();
+	const { pinned, page } = useCurrentVersion();
+	const active = useActiveSection(page === "home");
 	const initials = profile.name
 		.split(" ")
 		.map((part) => part[0])
 		.join("");
+	const navLink =
+		"rounded-full px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground";
 
 	return (
 		<header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl">
 			<nav className="page flex h-16 items-center justify-between">
-				<a
-					href="#top"
+				<SectionLink
+					id="top"
 					className="flex items-center gap-3 text-sm font-medium"
 					aria-label={`${profile.name}, back to top`}
 				>
@@ -54,7 +94,7 @@ export function SiteHeader() {
 							alt=""
 							width={32}
 							height={32}
-							className="size-8 rounded-full object-cover ring-1 ring-border"
+							className="photo size-8 rounded-full object-cover ring-1 ring-border"
 						/>
 					) : (
 						<span className="grid size-8 place-items-center rounded-full border border-border font-mono text-xs">
@@ -62,34 +102,45 @@ export function SiteHeader() {
 						</span>
 					)}
 					<span className="hidden sm:inline">{profile.name}</span>
-				</a>
+				</SectionLink>
 
 				<div className="flex items-center gap-1">
-					<ul className="hidden items-center gap-1 md:flex">
+					<ul className="hidden items-center gap-1 lg:flex">
 						{sections.map((section) => (
 							<li key={section.id}>
-								<a
-									href={`#${section.id}`}
+								<SectionLink
+									id={section.id}
 									className={cn(
-										"rounded-full px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground",
+										navLink,
 										active === section.id && "text-foreground",
 									)}
 								>
 									{section.label}
-								</a>
+								</SectionLink>
 							</li>
 						))}
 					</ul>
-					<ThemeToggle />
-					<a
-						href="#contact"
+					<PageLink
+						page="blog"
+						version={pinned}
 						className={cn(
-							"ml-2 rounded-full border border-border px-4 py-2 text-sm transition-colors hover:border-foreground/25",
+							navLink,
+							(page === "blog" || active === "writing") && "text-foreground",
+						)}
+					>
+						Blog
+					</PageLink>
+					<VersionSwitcher className="ml-1" />
+					<ThemeToggle />
+					<SectionLink
+						id="contact"
+						className={cn(
+							"ml-1 rounded-full border border-border px-4 py-2 text-sm transition-colors hover:border-foreground/25",
 							active === "contact" && "border-brand/50 text-brand",
 						)}
 					>
 						Contact
-					</a>
+					</SectionLink>
 				</div>
 			</nav>
 		</header>

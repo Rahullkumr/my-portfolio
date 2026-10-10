@@ -46,11 +46,21 @@ export const profile = {
 	photo: "/rahullkumr.webp", // file in /public; set to "" to show initials instead
 	available: true,
 	underDevelopment: true, // shows a "Site under development" badge in the hero; set false when done
-	headline: "Full-stack engineer building the ERP software businesses run on.",
+	siteUrl: "https://madebyrahul.tech",
+	headline: "I build SaaS ERP and HCM software, and learn AI in the open.",
 	intro:
-		"I work across the stack: serverless APIs on AWS, relational data models, and data-dense React interfaces that people use all day.",
-	email: "you@example.com", // TODO: your public email
+		"By day I'm a Full-Stack Engineer at Oplandtech, shipping serverless APIs, MySQL data models and data-dense React screens. Off the clock I learn new tech by building open-source AI projects.",
+	// Small link shown above the headline; set to null to hide it
+	spotlight: {
+		// The space after "DEV" is non-breaking, so the pill wraps after the "·" on phones
+		label: "Won Best Use of ElevenLabs · Hacktoberfest: Build for a Friend",
+		href: "#work",
+	} as { label: string; href: string } | null,
+	email: "", // TODO: your public email; until set, Contact points to LinkedIn
 	resumeUrl: "", // TODO: put resume.pdf in /public, then set this to "/resume.pdf"
+	devto: "rahullkumr", // dev.to username; the blog lists this account's articles
+	blogIntro:
+		"Notes on what I build and what I learn along the way, published on DEV.",
 	socials: [
 		{ label: "GitHub", href: "https://github.com/rahullkumr", icon: "github" },
 		{
@@ -60,9 +70,9 @@ export const profile = {
 		},
 	] satisfies Social[],
 	about: [
-		"I'm a full-stack engineer at Oplandtech, where I build and maintain an ERP platform covering inventory, procurement, wellbeing and organisation management.",
+		"I'm a full-stack engineer at Oplandtech, a SaaS company building an ERP and HCM platform.",
 		"Most of my work sits where business rules meet the interface: modelling data in MySQL, exposing it through typed Fastify APIs, and turning it into tables, dashboards and workflows that stay fast and clear as the data grows.",
-		// TODO: add a line about what you care about or what you're looking for next
+		"Outside work, I learn new technology by building with it in public. Hacktoberfest 2026 was about AI and open source, so I built Padh Ke Batao, an offline document explainer for my grandfather that runs a vision model on a laptop with no GPU. It won Best Use of ElevenLabs.",
 	],
 };
 
@@ -72,16 +82,19 @@ export const experience: Experience[] = [
 		role: "Junior Software Engineer",
 		period: "August 2025 — Present",
 		summary:
-			"Building a modular ERP platform end to end, from the database and serverless API to the React front end and the company website.",
+			"Building a modular SaaS ERP and HCM platform end to end, from the database and REST APIs to the React frontend and the company website.",
 		highlights: [
-			"Built ERP modules for inventory, procurement, wellbeing management and organisation structure.",
-			"Develop TypeScript REST APIs on Fastify, deployed serverless on AWS Lambda, using MySQL through TypeORM and Sequelize, Redis, S3 and SQS.",
-			"Build data-heavy React interfaces: sortable tables, dashboards and charts, interactive org charts, rich-text editing and drag-and-drop layouts.",
+			"Developed features for the recruitment module of the HCM category.",
+			"Built pricing and plan management for the SaaS product, and instance creation that sets up the platform for each new customer.",
+			"Implemented role-based and scope-based access control, so each user only sees and changes what their role allows, within the data they're scoped to.",
+			"Fixed many bugs across the platform.",
+			"Develop REST APIs on Fastify, deployed serverless on AWS Lambda, using MySQL through TypeORM and Sequelize, Redis, S3 and SQS.",
+			"Build data-heavy React interfaces: sortable tables, dashboards and charts, rich-text editing and drag-and-drop layouts.",
 			"Generate PDF and Excel reports from ERP data for business users.",
 			"Built the company marketing website with React, Tailwind CSS and Framer Motion.",
 		],
 		stack: [
-			"TypeScript",
+			"JavaScript",
 			"React",
 			"Fastify",
 			"MySQL",
@@ -97,7 +110,7 @@ export const experience: Experience[] = [
 export const projects: Project[] = [
 	{
 		title: "Padh Ke Batao",
-		context: "DEV Hacktoberfest 2026",
+		context: "Hacktoberfest 2026",
 		award: "Winner · Best Use of ElevenLabs",
 		description:
 			"Photograph a bank notice, hospital report or government letter and get a plain-language explanation in Hindi or English: what it says, what to do and by when, read aloud. Built for my grandfather. A local vision model reads the photo on a CPU-only laptop, so the document never leaves the machine; only the explanation text goes to ElevenLabs for the voice.",

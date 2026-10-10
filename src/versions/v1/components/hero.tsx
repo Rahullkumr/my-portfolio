@@ -1,5 +1,12 @@
-import { ArrowDown, Construction, MapPin } from "lucide-react";
+import {
+	ArrowDown,
+	ArrowRight,
+	Construction,
+	MapPin,
+	Trophy,
+} from "lucide-react";
 import { profile } from "#/data/profile";
+import { cn } from "#/lib/utils";
 import { SocialLinks } from "./social-links";
 
 export function Hero() {
@@ -17,7 +24,7 @@ export function Hero() {
 						width={256}
 						height={256}
 						fetchPriority="high"
-						className="rise mb-6 size-24 rounded-full object-cover shadow-lg ring-1 ring-border ring-offset-4 ring-offset-background md:size-28 lg:order-last lg:mb-0 lg:size-[clamp(12rem,32vh,16rem)] lg:ring-offset-8"
+						className="photo rise mb-6 size-24 rounded-full object-cover shadow-lg ring-1 ring-border ring-offset-4 ring-offset-background md:size-28 lg:order-last lg:mb-0 lg:size-[clamp(12rem,32vh,16rem)] lg:ring-offset-8"
 					/>
 				)}
 
@@ -41,9 +48,27 @@ export function Hero() {
 						</span>
 					</div>
 
+					{profile.spotlight && (
+						<a
+							href={profile.spotlight.href}
+							className="rise group mt-6 inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/[0.06] py-1.5 pr-3 pl-2.5 text-sm text-foreground transition-colors hover:border-brand/60 md:mt-8"
+							style={{ animationDelay: "40ms" }}
+						>
+							<Trophy aria-hidden className="size-4 text-brand" />
+							{profile.spotlight.label}
+							<ArrowRight
+								aria-hidden
+								className="size-3.5 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-brand"
+							/>
+						</a>
+					)}
+
 					{/* Sized by width and height so the whole hero fits short laptop screens */}
 					<h1
-						className="rise mt-6 text-[clamp(2.25rem,min(6vw,8.5vh),4rem)] leading-[1.04] font-semibold tracking-[-0.04em] text-balance md:mt-8"
+						className={cn(
+							"rise text-[clamp(2.25rem,min(6vw,8.5vh),4rem)] leading-[1.04] font-semibold tracking-[-0.04em] text-balance",
+							profile.spotlight ? "mt-5 md:mt-6" : "mt-6 md:mt-8",
+						)}
 						style={{ animationDelay: "80ms" }}
 					>
 						{profile.name}.

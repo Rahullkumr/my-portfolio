@@ -1,9 +1,14 @@
 @import 'tailwindcss';
 
+/* Each design version keeps its own styles in src/versions/<id>/<id>.css. */
+@import './versions/v1/v1.css';
+
 @custom-variant dark (&:is(.dark *));
 
-/* Light and dark themes. The .dark class on <html> is set before paint by the
-   script in __root.tsx. Token names follow shadcn so its components drop in. */
+/* Light and dark themes shared by every version. The .dark class on <html> is
+   set before paint by the script in __root.tsx. Token names follow shadcn so
+   its components drop in. A version can override tokens under
+   [data-version='vN'] in its own CSS. */
 :root {
   color-scheme: light;
 
@@ -35,28 +40,53 @@
 .dark {
   color-scheme: dark;
 
-  --background: oklch(0.145 0.004 285);
-  --foreground: oklch(0.96 0.003 285);
-  --card: oklch(0.175 0.005 285);
+  /* Ink rather than pure black; surfaces step up in lightness so cards and
+     menus read as raised without heavy shadows. Text sits just below white
+     to cut glare, and the mint is a touch calmer than full neon. */
+  --background: oklch(0.155 0.006 285);
+  --foreground: oklch(0.945 0.004 285);
+  --card: oklch(0.195 0.007 285);
   --card-foreground: var(--foreground);
-  --popover: oklch(0.175 0.005 285);
+  --popover: oklch(0.205 0.007 285);
   --popover-foreground: var(--foreground);
-  --primary: oklch(0.86 0.14 165);
-  --primary-foreground: oklch(0.2 0.03 165);
-  --secondary: oklch(0.22 0.005 285);
+  --primary: oklch(0.83 0.13 168);
+  --primary-foreground: oklch(0.21 0.04 168);
+  --secondary: oklch(0.235 0.007 285);
   --secondary-foreground: var(--foreground);
-  --muted: oklch(0.22 0.005 285);
-  --muted-foreground: oklch(0.7 0.01 285);
-  --accent: oklch(0.22 0.005 285);
+  --muted: oklch(0.235 0.007 285);
+  --muted-foreground: oklch(0.72 0.012 285);
+  --accent: oklch(0.235 0.007 285);
   --accent-foreground: var(--foreground);
   --destructive: oklch(0.637 0.237 25.331);
   --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(1 0 0 / 0.09);
-  --input: oklch(1 0 0 / 0.12);
-  --ring: oklch(0.86 0.14 165 / 0.6);
+  --border: oklch(1 0 0 / 0.085);
+  --input: oklch(1 0 0 / 0.13);
+  --ring: oklch(0.84 0.13 168 / 0.6);
 
-  --brand: oklch(0.86 0.14 165);
-  --brand-glow: oklch(0.86 0.14 165 / 0.1);
+  --brand: oklch(0.84 0.13 168);
+  --brand-glow: oklch(0.84 0.13 168 / 0.12);
+}
+
+/* Theme switch: the new theme grows out of the toggle button as a circle.
+   --theme-x/--theme-y are set by ThemeToggle; browsers without view
+   transitions, or with reduced motion, switch instantly. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  animation: theme-reveal 550ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0 at var(--theme-x, 50%) var(--theme-y, 0));
+  }
+  to {
+    clip-path: circle(150vmax at var(--theme-x, 50%) var(--theme-y, 0));
+  }
 }
 
 @theme inline {
@@ -97,8 +127,10 @@
     scroll-padding-top: 5rem;
   }
 
+  /* .smooth-scroll is added at the first click or key press (see __root.tsx),
+     so page loads and reloads never animate the scroll */
   @media (prefers-reduced-motion: no-preference) {
-    html {
+    html.smooth-scroll {
       scroll-behavior: smooth;
     }
   }
@@ -106,17 +138,6 @@
   body {
     @apply bg-background font-sans text-foreground antialiased;
     overflow-x: hidden;
-  }
-
-  /* Soft brand glow at the top of the page */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0 0 auto;
-    height: 70vh;
-    pointer-events: none;
-    z-index: -1;
-    background: radial-gradient(60% 60% at 50% 0%, var(--brand-glow), transparent 70%);
   }
 
   ::selection {
@@ -128,94 +149,5 @@
     outline: 2px solid var(--brand);
     outline-offset: 3px;
     border-radius: 4px;
-  }
-}
-
-@utility btn {
-  @apply inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-colors;
-}
-
-@layer components {
-  .page {
-    width: min(1080px, calc(100% - 2.5rem));
-    margin-inline: auto;
-  }
-
-  .btn-primary {
-    @apply btn bg-primary text-primary-foreground hover:bg-primary/85;
-  }
-
-  .btn-ghost {
-    @apply btn border border-border text-foreground hover:border-foreground/25 hover:bg-foreground/[0.04];
-  }
-
-  .chip {
-    @apply inline-flex items-center rounded-full border border-border bg-foreground/[0.02] px-3 py-1 font-mono text-xs text-muted-foreground;
-  }
-
-  /* Faint grid behind the hero, faded out toward the edges */
-  .hero-grid {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image:
-      linear-gradient(to right, color-mix(in oklab, var(--foreground) 5%, transparent) 1px, transparent 1px),
-      linear-gradient(to bottom, color-mix(in oklab, var(--foreground) 5%, transparent) 1px, transparent 1px);
-    background-size: 56px 56px;
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black, transparent 75%);
-  }
-
-  .status-dot {
-    position: relative;
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 9999px;
-    background: var(--brand);
-  }
-}
-
-/* Motion: on-load rise for the hero, scroll-driven reveal elsewhere.
-   Both are skipped when the user prefers reduced motion, and the reveal
-   falls back to fully visible in browsers without scroll timelines. */
-@media (prefers-reduced-motion: no-preference) {
-  .rise {
-    animation: rise 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  .status-dot::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: inherit;
-    animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-  }
-
-  @supports (animation-timeline: view()) {
-    .reveal {
-      animation: rise linear both;
-      animation-timeline: view();
-      animation-range: entry 0 entry 160px;
-    }
-  }
-}
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes ping {
-  75%,
-  100% {
-    transform: scale(2.4);
-    opacity: 0;
   }
 }

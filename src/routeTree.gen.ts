@@ -10,33 +10,70 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VersionRouteRouteImport } from './routes/$version/route'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as VersionIndexRouteImport } from './routes/$version/index'
+import { Route as VersionBlogRouteImport } from './routes/$version/blog'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VersionRouteRoute = VersionRouteRouteImport.update({
+  id: '/$version',
+  path: '/$version',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VersionIndexRoute = VersionIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => VersionRouteRoute,
+} as any)
+const VersionBlogRoute = VersionBlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => VersionRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$version': typeof VersionRouteRouteWithChildren
+  '/blog': typeof BlogRoute
+  '/$version/blog': typeof VersionBlogRoute
+  '/$version/': typeof VersionIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/blog': typeof BlogRoute
+  '/$version/blog': typeof VersionBlogRoute
+  '/$version': typeof VersionIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$version': typeof VersionRouteRouteWithChildren
+  '/blog': typeof BlogRoute
+  '/$version/blog': typeof VersionBlogRoute
+  '/$version/': typeof VersionIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/$version' | '/blog' | '/$version/blog' | '/$version/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/blog' | '/$version/blog' | '/$version'
+  id: '__root__' | '/' | '/$version' | '/blog' | '/$version/blog' | '/$version/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  VersionRouteRoute: typeof VersionRouteRouteWithChildren
+  BlogRoute: typeof BlogRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +85,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$version': {
+      id: '/$version'
+      path: '/$version'
+      fullPath: '/$version'
+      preLoaderRoute: typeof VersionRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$version/': {
+      id: '/$version/'
+      path: '/'
+      fullPath: '/$version/'
+      preLoaderRoute: typeof VersionIndexRouteImport
+      parentRoute: typeof VersionRouteRoute
+    }
+    '/$version/blog': {
+      id: '/$version/blog'
+      path: '/blog'
+      fullPath: '/$version/blog'
+      preLoaderRoute: typeof VersionBlogRouteImport
+      parentRoute: typeof VersionRouteRoute
+    }
   }
 }
 
+interface VersionRouteRouteChildren {
+  VersionBlogRoute: typeof VersionBlogRoute
+  VersionIndexRoute: typeof VersionIndexRoute
+}
+
+const VersionRouteRouteChildren: VersionRouteRouteChildren = {
+  VersionBlogRoute: VersionBlogRoute,
+  VersionIndexRoute: VersionIndexRoute,
+}
+
+const VersionRouteRouteWithChildren = VersionRouteRoute._addFileChildren(
+  VersionRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  VersionRouteRoute: VersionRouteRouteWithChildren,
+  BlogRoute: BlogRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,15 +1,51 @@
 import { Moon, Sun } from "lucide-react";
+import { type MouseEvent, useEffect } from "react";
+
+const themeColors = { light: "#fafafa", dark: "#131317" };
+
+// Points the browser UI colour (mobile address bar) at the active theme,
+// not just the system one.
+function syncThemeColor() {
+	const isDark = document.documentElement.classList.contains("dark");
+	for (const meta of document.querySelectorAll('meta[name="theme-color"]')) {
+		meta.removeAttribute("media");
+		meta.setAttribute("content", isDark ? themeColors.dark : themeColors.light);
+	}
+}
 
 // The icon swaps through the `dark:` variant, so it is right on first paint
 // without waiting for React to know the theme.
 export function ThemeToggle() {
-	function toggle() {
-		const isDark = document.documentElement.classList.toggle("dark");
-		try {
-			localStorage.setItem("theme", isDark ? "dark" : "light");
-		} catch {
-			// Storage blocked (e.g. private mode); the theme still applies for this visit.
+	useEffect(() => {
+		syncThemeColor();
+		// The class can also change when the system theme flips (see __root.tsx)
+		const observer = new MutationObserver(syncThemeColor);
+		observer.observe(document.documentElement, { attributeFilter: ["class"] });
+		return () => observer.disconnect();
+	}, []);
+
+	function toggle(event: MouseEvent<HTMLButtonElement>) {
+		function apply() {
+			const isDark = document.documentElement.classList.toggle("dark");
+			try {
+				localStorage.setItem("theme", isDark ? "dark" : "light");
+			} catch {
+				// Storage blocked (e.g. private mode); the theme still applies for this visit.
+			}
 		}
+
+		const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+		if (!document.startViewTransition || reduceMotion) {
+			apply();
+			return;
+		}
+
+		// Grow the new theme out of the button
+		const rect = event.currentTarget.getBoundingClientRect();
+		const root = document.documentElement.style;
+		root.setProperty("--theme-x", `${rect.left + rect.width / 2}px`);
+		root.setProperty("--theme-y", `${rect.top + rect.height / 2}px`);
+		document.startViewTransition(apply);
 	}
 
 	return (
