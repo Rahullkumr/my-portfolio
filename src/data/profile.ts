@@ -72,7 +72,7 @@ export const profile = {
 	about: [
 		"I'm a full-stack engineer at Oplandtech, a SaaS company building an ERP and HCM platform.",
 		"Most of my work sits where business rules meet the interface: modelling data in MySQL, exposing it through typed Fastify APIs, and turning it into tables, dashboards and workflows that stay fast and clear as the data grows.",
-		"Outside work, I learn new technology by building with it in public. Hacktoberfest 2026 was about AI and open source, so I built Padh Ke Batao, an offline document explainer for my grandfather that runs a vision model on a laptop with no GPU. It won Best Use of ElevenLabs.",
+		"Outside work, I learn new technology by building with it in public. Hacktoberfest 2026 was about AI and open source, so I built two tools for my grandfather that run open models on a laptop with no GPU: Padh Ke Batao, an offline document explainer that won Best Use of ElevenLabs, and Chalo Nana, a Hindi walk planner that gets him off the reels and out to see people.",
 	],
 };
 
@@ -108,6 +108,37 @@ export const experience: Experience[] = [
 ];
 
 export const projects: Project[] = [
+	{
+		title: "Chalo Nana",
+		context: "Hacktoberfest 2026",
+		description:
+			"Tap how my grandfather is today, in Hindi, and get a walk sized for him: a loop through the places he likes, spoken to him once in a warm Hindi voice, and then the phone goes in his pocket. A local Gemma model reads the family's Hindi, plain code decides how much walking is safe and plans the route, and his map and walk log never leave the laptop. On the first walk he went about 2 km to the Navratri pandal without taking his phone out.",
+		tags: [
+			"Ollama",
+			"Gemma 4",
+			"ElevenLabs",
+			"Fastify",
+			"Node.js",
+			"JavaScript",
+		],
+		links: [
+			{
+				label: "GitHub",
+				href: "https://github.com/Rahullkumr/touch-grass",
+				icon: "github",
+			},
+			{
+				label: "Demo video",
+				href: "https://www.youtube.com/watch?v=tpYq5qZAvFU",
+				icon: "youtube",
+			},
+			{
+				label: "Write-up on DEV",
+				href: "https://dev.to/rahullkumr/chalo-nana-a-local-ai-that-sends-my-grandfather-to-people-not-just-steps-35pc",
+				icon: "link",
+			},
+		],
+	},
 	{
 		title: "Padh Ke Batao",
 		context: "Hacktoberfest 2026",
