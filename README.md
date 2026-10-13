@@ -23,3 +23,7 @@ Each design lives in `src/versions/<id>/`. The newest is served at `/`; older on
 ## Deploy
 
 [`render.yaml`](render.yaml) is a Render Blueprint: **New > Blueprint**, connect repo, deploy. No secrets needed.
+
+---
+
+Happy coding!
