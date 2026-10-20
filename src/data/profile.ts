@@ -72,7 +72,7 @@ export const profile = {
 	about: [
 		"I'm a full-stack engineer at Oplandtech, a SaaS company building an ERP and HCM platform.",
 		"Most of my work sits where business rules meet the interface: modelling data in MySQL, exposing it through typed Fastify APIs, and turning it into tables, dashboards and workflows that stay fast and clear as the data grows.",
-		"Outside work, I learn new technology by building with it in public. Hacktoberfest 2026 was about AI and open source, so I built tools for my family that run open models on a laptop with no GPU: for my grandfather, Padh Ke Batao, an offline document explainer that won Best Use of ElevenLabs, and Chalo Nana, a Hindi walk planner that gets him off the reels and out to see people; for my father, Repairwala, a voice-first job book for his repair shop.",
+		"Outside work, I learn new technology by building with it in public. Hacktoberfest 2026 was about AI and open source, so I built tools that run open models on a laptop with no GPU: Padh Ke Batao, an offline document explainer that won Best Use of ElevenLabs; Chalo Nana, a Hindi walk planner that gets older people off the reels and out to see people; and Repairwala, a voice-first job book for small repair shops.",
 	],
 };
 
@@ -114,7 +114,7 @@ export const projects: Project[] = [
 		context: "Hacktoberfest 2026",
 		award: "Winner · Best Use of ElevenLabs",
 		description:
-			"Photograph a bank notice, hospital report or government letter and get a plain-language explanation in Hindi or English: what it says, what to do and by when, read aloud. Built for my grandfather. A local vision model reads the photo on a CPU-only laptop, so the document never leaves the machine; only the explanation text goes to ElevenLabs for the voice.",
+			"Photograph a bank notice, hospital report or government letter and get a plain-language explanation in Hindi or English: what it says, what to do and by when, read aloud. A local vision model reads the photo on a CPU-only laptop, so the document never leaves the machine; only the explanation text goes to ElevenLabs for the voice.",
 		tags: [
 			"Ollama",
 			"Qwen 3.5",
@@ -145,7 +145,7 @@ export const projects: Project[] = [
 		title: "Chalo Nana",
 		context: "Hacktoberfest 2026",
 		description:
-			"A daily walk planner for my grandfather, whose doctor asked for 30 minutes of walking a day but whose evenings went to his phone. The family spends 30 seconds tapping Hindi options for how he feels and where he wants to go, and he gets a walk sized for that day: a loop through the places he likes, spoken to him once in warm Hindi with a reason to go. A local Gemma 4 model in Ollama reads the Hindi and writes the plan, while rule-based code sets safe limits, plans the route over a family-made place map and rejects any invented place; only the plan text goes to ElevenLabs for the voice.",
+			"A daily walk planner for older people who are told to walk 30 minutes a day but whose evenings go to their phone. Someone at home spends 30 seconds tapping Hindi options for how they feel and where they want to go, and they get a walk sized for that day: a loop through places they like, spoken once in warm Hindi with a reason to go. A local Gemma 4 model in Ollama reads the Hindi and writes the plan, while rule-based code sets safe limits, plans the route over a hand-made map of places and rejects any invented place; only the plan text goes to ElevenLabs for the voice.",
 		tags: [
 			"Ollama",
 			"Gemma 4",
@@ -176,7 +176,7 @@ export const projects: Project[] = [
 		title: "Repairwala",
 		context: "Hacktoberfest 2026",
 		description:
-			"A Hindi-first, voice-first job book for small repair shops, built for my father's electrical repair shop. He photographs the item and says what's wrong, and the job is saved with the customer's details so the shop keeps a history. When the repair is done, one tap sends the customer a WhatsApp voice note and a UPI QR code for the exact amount. The Android app talks to a Node server on the shop laptop over Wi-Fi, where whisper.cpp transcribes the Hindi and a local Gemma 4 model turns it into a job card and reads rating-plate photos. The model only interprets: plain code sets pickup dates, checks amounts and builds the message and QR, and only the one-line ready message goes to ElevenLabs for the voice.",
+			"A Hindi-first, voice-first job book for small repair shops. The shopkeeper photographs the item and says what's wrong, and the job is saved with the customer's details so the shop keeps a history. When the repair is done, one tap sends the customer a WhatsApp voice note and a UPI QR code for the exact amount. The Android app talks to a Node server on the shop laptop over Wi-Fi, where whisper.cpp transcribes the Hindi and a local Gemma 4 model turns it into a job card and reads rating-plate photos. The model only interprets: plain code sets pickup dates, checks amounts and builds the message and QR, and only the one-line ready message goes to ElevenLabs for the voice.",
 		tags: [
 			"Flutter",
 			"whisper.cpp",

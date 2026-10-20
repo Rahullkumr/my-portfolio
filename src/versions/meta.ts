@@ -11,12 +11,7 @@ export type VersionInfo = {
 };
 
 export const versions = [
-	{
-		id: "v2",
-		released: "Coming soon",
-		note: "New design in progress",
-		upcoming: true,
-	},
+	{ id: "v2", released: "Oct 2026", note: "Colourful, motion-driven" },
 	{ id: "v1", released: "Oct 2026", note: "Dark minimal, single page" },
 ] as const satisfies readonly VersionInfo[];
 
