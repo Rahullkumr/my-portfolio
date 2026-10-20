@@ -46,6 +46,9 @@ export const getPosts = createServerFn({ method: "GET" }).handler(
 				{
 					headers: {
 						accept: "application/json",
+						// dev.to's CDN caches each encoding separately and its gzip copy
+						// can lag new posts by days; the uncompressed copy stays fresh.
+						"accept-encoding": "identity",
 						"user-agent": "rahul-portfolio",
 					},
 					signal: AbortSignal.timeout(5000),
