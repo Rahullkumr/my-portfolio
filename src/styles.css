@@ -2,6 +2,7 @@
 
 /* Each design version keeps its own styles in src/versions/<id>/<id>.css. */
 @import './versions/v1/v1.css';
+@import './versions/v2/v2.css';
 
 @custom-variant dark (&:is(.dark *));
 

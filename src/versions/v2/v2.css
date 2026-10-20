@@ -1,0 +1,161 @@
+/* v2 design: "Spectrum". Scoped to [data-version='v2'] like v1; the html
+   prefix lifts the token overrides above the shared :root and .dark sets. */
+
+@utility v2-display {
+  font-family: 'Bricolage Grotesque', var(--font-sans);
+  font-optical-sizing: auto;
+}
+
+@utility v2-btn {
+  @apply inline-flex h-12 items-center gap-2 rounded-full px-6 text-sm font-medium transition-colors;
+}
+
+html[data-version='v2'] {
+  --background: oklch(0.975 0.014 85);
+  --foreground: oklch(0.2 0.03 290);
+  --card: oklch(0.995 0.006 85);
+  --popover: oklch(0.995 0.006 85);
+  --muted-foreground: oklch(0.45 0.03 290);
+  --border: oklch(0.2 0.03 290 / 0.1);
+  --brand: oklch(0.56 0.22 0);
+  --primary: oklch(0.2 0.03 290);
+  --primary-foreground: oklch(0.985 0.01 85);
+  --ring: oklch(0.56 0.22 0 / 0.5);
+
+  /* Deeper stops in light mode so the name stays readable on cream */
+  --v2-name: linear-gradient(90deg, #e11d63, #ea580c, #d97706, #059669, #0284c7, #7c3aed);
+  --v2-loop: linear-gradient(90deg, #e11d63, #ea580c, #d97706, #059669, #0284c7, #7c3aed, #e11d63);
+  --v2-grain-opacity: 0.05;
+
+  /* Spectrum as text colours: deeper on cream, bright on ink */
+  --v2-pink: #e11d63;
+  --v2-saffron: #ea580c;
+  --v2-marigold: #b45309;
+  --v2-leaf: #047857;
+  --v2-sky: #0369a1;
+  --v2-violet: #6d28d9;
+}
+
+html[data-version='v2'].dark {
+  --background: oklch(0.15 0.035 290);
+  --foreground: oklch(0.96 0.01 290);
+  --card: oklch(0.2 0.04 290);
+  --popover: oklch(0.21 0.04 290);
+  --muted-foreground: oklch(0.74 0.03 290);
+  --border: oklch(1 0 0 / 0.1);
+  --brand: oklch(0.72 0.2 0);
+  --primary: oklch(0.96 0.01 290);
+  --primary-foreground: oklch(0.15 0.035 290);
+  --ring: oklch(0.72 0.2 0 / 0.6);
+
+  --v2-name: linear-gradient(90deg, #ff3d7f, #ff7a1a, #ffb627, #3ddc84, #2ec4ff, #8b5cf6);
+  --v2-loop: linear-gradient(90deg, #ff3d7f, #ff7a1a, #ffb627, #3ddc84, #2ec4ff, #8b5cf6, #ff3d7f);
+  --v2-grain-opacity: 0.07;
+
+  --v2-pink: #ff5c93;
+  --v2-saffron: #ff8f3d;
+  --v2-marigold: #ffc24d;
+  --v2-leaf: #4ee391;
+  --v2-sky: #52cfff;
+  --v2-violet: #a689fa;
+}
+
+@layer base {
+  /* Film grain over everything, so flat colour reads as printed */
+  [data-version='v2'] body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    pointer-events: none;
+    opacity: var(--v2-grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  [data-version='v2'] ::selection {
+    background: #ffb627;
+    color: #1d0f05;
+  }
+}
+
+@layer components {
+  :where([data-version='v2']) .v2-page {
+    width: min(1200px, calc(100% - 2.5rem));
+    margin-inline: auto;
+  }
+
+  :where([data-version='v2']) .v2-btn-primary {
+    @apply v2-btn bg-foreground text-background hover:bg-foreground/85;
+  }
+
+  :where([data-version='v2']) .v2-btn-ghost {
+    @apply v2-btn border border-foreground/15 text-foreground backdrop-blur-sm hover:border-foreground/40;
+  }
+
+  /* Each letter shows its slice of one gradient, so the name stays a single
+     sweep of colour even while letters move independently */
+  :where([data-version='v2']) .v2-name-letter {
+    background-image: var(--v2-name);
+    background-size: var(--v2-count) 100%;
+    background-position: var(--v2-pos) 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Ends on the colour it starts with, so the flowing animation never shows a seam */
+  :where([data-version='v2']) .v2-gradient-text {
+    background-image: var(--v2-loop);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Soft colour clouds behind the hero; the canvas ribbons draw over them */
+  :where([data-version='v2']) .v2-blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(80px);
+    opacity: 0.5;
+  }
+
+  :where(.dark[data-version='v2']) .v2-blob {
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :where([data-version='v2']) .v2-gradient-text {
+    animation: v2-flow 8s linear infinite;
+  }
+
+  :where([data-version='v2']) .v2-blob {
+    animation: v2-drift 18s ease-in-out infinite alternate;
+  }
+
+  :where([data-version='v2']) .v2-blob:nth-child(2) {
+    animation-duration: 23s;
+    animation-delay: -6s;
+  }
+
+  :where([data-version='v2']) .v2-blob:nth-child(3) {
+    animation-duration: 29s;
+    animation-delay: -12s;
+  }
+}
+
+@keyframes v2-flow {
+  to {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes v2-drift {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(8vw, 6vh) scale(1.2);
+  }
+}
