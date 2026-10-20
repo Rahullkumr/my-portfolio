@@ -108,37 +108,7 @@ export const experience: Experience[] = [
 ];
 
 export const projects: Project[] = [
-	{
-		title: "Chalo Nana",
-		context: "Hacktoberfest 2026",
-		description:
-			"Tap how my grandfather is today, in Hindi, and get a walk sized for him: a loop through the places he likes, spoken to him once in a warm Hindi voice, and then the phone goes in his pocket. A local Gemma model reads the family's Hindi, plain code decides how much walking is safe and plans the route, and his map and walk log never leave the laptop. On the first walk he went about 2 km to the Navratri pandal without taking his phone out.",
-		tags: [
-			"Ollama",
-			"Gemma 4",
-			"ElevenLabs",
-			"Fastify",
-			"Node.js",
-			"JavaScript",
-		],
-		links: [
-			{
-				label: "GitHub",
-				href: "https://github.com/Rahullkumr/touch-grass",
-				icon: "github",
-			},
-			{
-				label: "Demo video",
-				href: "https://www.youtube.com/watch?v=tpYq5qZAvFU",
-				icon: "youtube",
-			},
-			{
-				label: "Write-up on DEV",
-				href: "https://dev.to/rahullkumr/chalo-nana-a-local-ai-that-sends-my-grandfather-to-people-not-just-steps-35pc",
-				icon: "link",
-			},
-		],
-	},
+	// In the order they were built: first project first, newest last
 	{
 		title: "Padh Ke Batao",
 		context: "Hacktoberfest 2026",
@@ -167,6 +137,37 @@ export const projects: Project[] = [
 			{
 				label: "Write-up on DEV",
 				href: "https://dev.to/rahullkumr/padh-ke-batao-an-ai-that-reads-my-grandfathers-documents-to-him-on-a-laptop-with-no-gpu-3818",
+				icon: "link",
+			},
+		],
+	},
+	{
+		title: "Chalo Nana",
+		context: "Hacktoberfest 2026",
+		description:
+			"A daily walk planner for my grandfather, whose doctor asked for 30 minutes of walking a day but whose evenings went to his phone. The family spends 30 seconds tapping Hindi options for how he feels and where he wants to go, and he gets a walk sized for that day: a loop through the places he likes, spoken to him once in warm Hindi with a reason to go. A local Gemma 4 model in Ollama reads the Hindi and writes the plan, while rule-based code sets safe limits, plans the route over a family-made place map and rejects any invented place; only the plan text goes to ElevenLabs for the voice.",
+		tags: [
+			"Ollama",
+			"Gemma 4",
+			"ElevenLabs",
+			"Fastify",
+			"Node.js",
+			"JavaScript",
+		],
+		links: [
+			{
+				label: "GitHub",
+				href: "https://github.com/Rahullkumr/touch-grass",
+				icon: "github",
+			},
+			{
+				label: "Demo video",
+				href: "https://www.youtube.com/watch?v=tpYq5qZAvFU",
+				icon: "youtube",
+			},
+			{
+				label: "Write-up on DEV",
+				href: "https://dev.to/rahullkumr/chalo-nana-a-local-ai-that-sends-my-grandfather-to-people-not-just-steps-35pc",
 				icon: "link",
 			},
 		],
