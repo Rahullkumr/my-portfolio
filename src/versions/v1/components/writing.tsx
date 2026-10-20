@@ -15,7 +15,7 @@ export function Writing({ feed }: { feed: Promise<BlogFeed> }) {
 
 	return (
 		<Section id="writing" index="05" label="Writing">
-			<Await promise={feed} fallback={<PostListSkeleton count={2} />}>
+			<Await promise={feed} fallback={<PostListSkeleton count={LATEST_COUNT} />}>
 				{({ posts, error }) =>
 					posts.length === 0 ? (
 						<PostsUnavailable error={error} />

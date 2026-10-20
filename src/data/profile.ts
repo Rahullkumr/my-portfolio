@@ -45,7 +45,7 @@ export const profile = {
 	location: "Ranchi, India",
 	photo: "/rahullkumr.webp", // file in /public; set to "" to show initials instead
 	available: true,
-	underDevelopment: true, // shows a "Site under development" badge in the hero; set false when done
+	underDevelopment: false, // shows a "Site under development" badge in the hero; set false when done
 	siteUrl: "https://madebyrahul.tech",
 	headline: "I build SaaS ERP and HCM software, and learn AI in the open.",
 	intro:
@@ -72,7 +72,7 @@ export const profile = {
 	about: [
 		"I'm a full-stack engineer at Oplandtech, a SaaS company building an ERP and HCM platform.",
 		"Most of my work sits where business rules meet the interface: modelling data in MySQL, exposing it through typed Fastify APIs, and turning it into tables, dashboards and workflows that stay fast and clear as the data grows.",
-		"Outside work, I learn new technology by building with it in public. Hacktoberfest 2026 was about AI and open source, so I built two tools for my grandfather that run open models on a laptop with no GPU: Padh Ke Batao, an offline document explainer that won Best Use of ElevenLabs, and Chalo Nana, a Hindi walk planner that gets him off the reels and out to see people.",
+		"Outside work, I learn new technology by building with it in public. Hacktoberfest 2026 was about AI and open source, so I built tools for my family that run open models on a laptop with no GPU: for my grandfather, Padh Ke Batao, an offline document explainer that won Best Use of ElevenLabs, and Chalo Nana, a Hindi walk planner that gets him off the reels and out to see people; for my father, Repairwala, a voice-first job book for his repair shop.",
 	],
 };
 
@@ -172,6 +172,38 @@ export const projects: Project[] = [
 			},
 		],
 	},
+	{
+		title: "Repairwala",
+		context: "Hacktoberfest 2026",
+		description:
+			"A Hindi-first, voice-first job book for small repair shops, built for my father's electrical repair shop. He photographs the item and says what's wrong, and the job is saved with the customer's details so the shop keeps a history. When the repair is done, one tap sends the customer a WhatsApp voice note and a UPI QR code for the exact amount. The Android app talks to a Node server on the shop laptop over Wi-Fi, where whisper.cpp transcribes the Hindi and a local Gemma 4 model turns it into a job card and reads rating-plate photos. The model only interprets: plain code sets pickup dates, checks amounts and builds the message and QR, and only the one-line ready message goes to ElevenLabs for the voice.",
+		tags: [
+			"Flutter",
+			"whisper.cpp",
+			"Ollama",
+			"Gemma 4",
+			"ElevenLabs",
+			"Fastify",
+			"SQLite",
+		],
+		links: [
+			{
+				label: "GitHub",
+				href: "https://github.com/Rahullkumr/repairwala",
+				icon: "github",
+			},
+			{
+				label: "Demo video",
+				href: "https://youtu.be/9ohNuEXWs7g",
+				icon: "youtube",
+			},
+			{
+				label: "Write-up on DEV",
+				href: "https://dev.to/rahullkumr/repairwala-a-voice-first-job-book-for-small-repair-shops-with-local-ai-34p1",
+				icon: "link",
+			},
+		],
+	},
 ];
 
 export const stack: StackGroup[] = [
@@ -215,6 +247,8 @@ export const stack: StackGroup[] = [
 			"Ollama",
 			"Local vision models",
 			"Qwen",
+			"Gemma",
+			"whisper.cpp",
 			"Prompt engineering",
 			"Structured JSON output",
 			"ElevenLabs TTS",

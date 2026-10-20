@@ -134,7 +134,11 @@ export function Work() {
 					return (
 						<li
 							key={project.title}
-							className={projects.length === 1 ? "sm:col-span-2" : undefined}
+							className={
+								projects.length % 2 === 1 && i === projects.length - 1
+									? "sm:col-span-2"
+									: undefined
+							}
 						>
 							{project.href && !project.links ? (
 								<a
